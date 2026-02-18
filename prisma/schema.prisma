@@ -1,0 +1,149 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model brands {
+  id         Int        @id @default(autoincrement()) @db.UnsignedInt
+  name       String     @unique(map: "name") @db.VarChar(100)
+  visible    Boolean?   @default(true)
+  created_at DateTime?  @default(now()) @db.Timestamp(0)
+  updated_at DateTime?  @default(now()) @db.Timestamp(0)
+  deleted_at DateTime?  @db.Timestamp(0)
+  products   products[]
+}
+
+model categories {
+  id         Int        @id @default(autoincrement()) @db.UnsignedInt
+  name       String     @unique(map: "name") @db.VarChar(50)
+  created_at DateTime?  @default(now()) @db.Timestamp(0)
+  updated_at DateTime?  @default(now()) @db.Timestamp(0)
+  deleted_at DateTime?  @db.Timestamp(0)
+  products   products[]
+}
+
+model order_items {
+  id         Int      @id @default(autoincrement()) @db.UnsignedInt
+  order_id   Int      @db.UnsignedInt
+  product_id Int      @db.UnsignedInt
+  quantity   Int      @db.UnsignedInt
+  unit_price Decimal  @db.Decimal(10, 2)
+  orders     orders   @relation(fields: [order_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "fk_order_items_order")
+  products   products @relation(fields: [product_id], references: [id], onUpdate: Restrict, map: "fk_order_items_product")
+
+  @@index([order_id], map: "fk_order_items_order")
+  @@index([product_id], map: "fk_order_items_product")
+}
+
+model orders {
+  id                Int             @id @default(autoincrement()) @db.UnsignedInt
+  user_id           Int             @db.UnsignedInt
+  payment_method_id Int             @db.UnsignedInt
+  status            orders_status?  @default(PENDING)
+  total_amount      Decimal         @db.Decimal(12, 2)
+  created_at        DateTime?       @default(now()) @db.Timestamp(0)
+  updated_at        DateTime?       @default(now()) @db.Timestamp(0)
+  order_items       order_items[]
+  payment_methods   payment_methods @relation(fields: [payment_method_id], references: [id], onUpdate: Restrict, map: "fk_order_payment")
+  users             users           @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "fk_order_user")
+
+  @@index([payment_method_id], map: "fk_order_payment")
+  @@index([user_id], map: "fk_order_user")
+}
+
+model payment_methods {
+  id         Int       @id @default(autoincrement()) @db.UnsignedInt
+  name       String    @unique(map: "name") @db.VarChar(100)
+  active     Boolean?  @default(true)
+  created_at DateTime? @default(now()) @db.Timestamp(0)
+  updated_at DateTime? @default(now()) @db.Timestamp(0)
+  deleted_at DateTime? @db.Timestamp(0)
+  orders     orders[]
+}
+
+model products {
+  id          Int           @id @default(autoincrement()) @db.UnsignedInt
+  name        String        @db.VarChar(50)
+  price       Decimal       @db.Decimal(10, 2)
+  size        String        @db.VarChar(10)
+  color_rgb   String        @db.VarChar(11)
+  stock       Int           @default(0) @db.UnsignedInt
+  description String?       @db.Text
+  visible     Boolean?      @default(true)
+  category_id Int?          @db.UnsignedInt
+  brand_id    Int?          @db.UnsignedInt
+  created_at  DateTime?     @default(now()) @db.Timestamp(0)
+  updated_at  DateTime?     @default(now()) @db.Timestamp(0)
+  deleted_at  DateTime?     @db.Timestamp(0)
+  order_items order_items[]
+  brands      brands?       @relation(fields: [brand_id], references: [id], onUpdate: Restrict, map: "fk_product_brand")
+  categories  categories?   @relation(fields: [category_id], references: [id], onUpdate: Restrict, map: "fk_product_category")
+
+  @@index([brand_id], map: "fk_product_brand")
+  @@index([category_id], map: "fk_product_category")
+}
+
+model users {
+  id            Int         @id @default(autoincrement()) @db.UnsignedInt
+  name          String      @db.VarChar(100)
+  email         String      @unique(map: "email") @db.VarChar(100)
+  password_hash String      @db.VarChar(255)
+  role          users_role? @default(CUSTOMER)
+  cellphone     String      @db.VarChar(15)
+  street        String      @db.VarChar(100)
+  neighborhood  String      @db.VarChar(100)
+  number        String      @db.VarChar(50)
+  city          String      @db.VarChar(100)
+  state         users_state
+  zip_code      String      @db.VarChar(9)
+  created_at    DateTime?   @default(now()) @db.Timestamp(0)
+  updated_at    DateTime?   @default(now()) @db.Timestamp(0)
+  orders        orders[]
+}
+
+enum orders_status {
+  PENDING
+  PAID
+  SHIPPED
+  CANCELED
+}
+
+enum users_role {
+  ADMIN
+  CUSTOMER
+  STORE
+}
+
+enum users_state {
+  AC
+  AP
+  AM
+  PA
+  RO
+  RR
+  TO
+  AL
+  BA
+  CE
+  MA
+  PB
+  PE
+  PI
+  RN
+  SE
+  DF
+  GO
+  MT
+  MS
+  ES
+  MG
+  SP
+  RJ
+  PR
+  RS
+  SC
+}
