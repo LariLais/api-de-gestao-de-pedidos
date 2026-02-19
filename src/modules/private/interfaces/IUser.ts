@@ -18,5 +18,33 @@ export interface IUserCreateOutput {
   id: number;
   name: string;
   email: string;
-  role: $Enums.users_role
+  role: $Enums.users_role;
+}
+
+export interface IUserUpdateInput {
+  name: string;
+  email: string;
+  password: string;
+  role: $Enums.users_role;
+  cellphone: string;
+  street: string;
+  neighborhood: string;
+  number: string;
+  city: string;
+  state: $Enums.users_state;
+  zipcode: string;
+}
+
+export interface IUserUpdateOutput {
+  name?: string;
+  email?: string;
+  password?: string;
+  role?: $Enums.users_role;
+  cellphone?: string;
+  street?: string;
+  neighborhood?: string;
+  number?: string;
+  city?: string;
+  state?: $Enums.users_state;
+  zipcode?: string;
 }

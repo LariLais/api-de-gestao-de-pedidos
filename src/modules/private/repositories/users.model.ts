@@ -1,6 +1,6 @@
 import { prisma } from "../../../../prisma/config/prisma";
 import { generateHashedPassword } from "../../../utils/generateHashedPassword";
-import { IUserCreateInput, IUserCreateOutput } from "../interfaces/IUser";
+import { IUserCreateInput, IUserCreateOutput, IUserUpdateInput, IUserUpdateOutput } from "../interfaces/IUser";
 
 export class UserRepository {
   public async createUser(data: IUserCreateInput): Promise<IUserCreateOutput> {
@@ -29,4 +29,9 @@ export class UserRepository {
       role: user.role,
     };
   }
+  // public async updateUser(userId: number, data: IUserUpdateInput): Promise<IUserUpdateOutput>{
+  //   const userUpdated = await prisma.users.update({
+
+  //   })
+  // }
 }
