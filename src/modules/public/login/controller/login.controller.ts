@@ -7,8 +7,12 @@ export class LoginController {
 
   public async login(req: Request, res: Response) {
     try {
-      const role = await this.loginService.login(req.body, res);
-      return res.status(200).json({ message: "Login bem-sucedido.", role });
+      const login = await this.loginService.login(req.body, res);
+      return ResponseHandler.sucess(
+        res,
+        login,
+        "Usuário autenticado com sucesso.",
+      );
     } catch (error) {
       return ResponseHandler.error(
         res,
