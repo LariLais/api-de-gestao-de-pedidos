@@ -7,6 +7,7 @@ export class LoginController {
 
   public async login(req: Request, res: Response) {
     try {
+      console.log(req.body)
       const login = await this.loginService.login(req.body, res);
       return ResponseHandler.sucess(
         res,

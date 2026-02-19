@@ -11,6 +11,5 @@ export function errorMiddleware(
   if (err instanceof AppError) {
     return ResponseHandler.error(res, err.message, err.statusCode);
   }
-  console.log(err);
   return ResponseHandler.error(res, "Erro interno do servidor", 500);
 }

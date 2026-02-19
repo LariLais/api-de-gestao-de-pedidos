@@ -39,6 +39,7 @@ export class ResponseHandler {
     statusCode = 500,
     error?: unknown,
   ) {
+    console.log(error)
     return this.send(res, false, message, statusCode, undefined, error);
   }
 
@@ -52,7 +53,7 @@ export class ResponseHandler {
 
   public static unauthorized(
     res: Response,
-    message = "Acesso não autorizado.",
+    message = "Usuário não autenticado.",
   ) {
     return this.send(res, false, message, 401);
   }
@@ -63,5 +64,9 @@ export class ResponseHandler {
 
   public static conflict(res: Response, message = "Recurso em conflito.") {
     return this.send(res, false, message, 409);
+  }
+
+  public static forbidden(res: Response, message = "Acesso negado.") {
+    return this.send(res, false, message, 403);
   }
 }
