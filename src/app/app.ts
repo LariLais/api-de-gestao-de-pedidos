@@ -1,40 +1,32 @@
-import dotenv from "dotenv";
-dotenv.config();
-import cors, { CorsOptions } from "cors";
-import env from "dotenv";
+import "dotenv/config";
 import express from "express";
+import cors, { CorsOptions } from "cors";
 import cookieParser from "cookie-parser";
-env.config();
+import { errorMiddleware } from "../middlewares/errorMiddleware";
+import { router } from "../routes/routes";
 
 const app = express();
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 const PORT = process.env.PORT ?? 3001;
-const localhostUrl = `http://localhost:${PORT}`;
-
-const allowedOrigins = [localhostUrl];
+const allowedOrigins: string[] =
+  process.env.NODE_ENV === "production"
+    ? [process.env.FRONTEND_URL as string]
+    : [`http://localhost:${PORT}`];
 
 const corsOptions: CorsOptions = {
-  origin: (
-    origin: string | undefined,
-    callback: (err: Error | null, allow?: boolean) => void,
-  ) => {
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Não permitido pelo CORS."));
-    }
-  },
+  origin: allowedOrigins,
   credentials: true,
 };
 
 app.use(cors(corsOptions));
 
-app.get("/", (req, res) => {
-  res.json({ message: "API rodando com sucesso!" });
-});
+app.get("/", (req, res) => res.json({ message: "API rodando com sucesso!" }));
+
+app.use("/", router);
+app.use(errorMiddleware);
 
 export { app };
