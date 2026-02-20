@@ -7,6 +7,6 @@ import { userRouter } from "../modules/private/routes/users.routes";
 const router = Router();
 
 router.use("/login", loginRouter);
-router.use("/user", autenticate, roleMiddleware(["ADMIN"]), userRouter);
+router.use("/users", autenticate, roleMiddleware(["ADMIN"]), userRouter);
 
 export { router };

@@ -9,7 +9,7 @@ export class LoginController {
     try {
       console.log(req.body)
       const login = await this.loginService.login(req.body, res);
-      return ResponseHandler.sucess(
+      return ResponseHandler.success(
         res,
         login,
         "Usuário autenticado com sucesso.",

@@ -1,6 +1,12 @@
 import { prisma } from "../../../../prisma/config/prisma";
+import { $Enums } from "../../../generated/prisma/client";
 import { generateHashedPassword } from "../../../utils/generateHashedPassword";
-import { IUserCreateInput, IUserCreateOutput, IUserUpdateInput, IUserUpdateOutput } from "../interfaces/IUser";
+import {
+  IUserCreateInput,
+  IUserCreateOutput,
+  IUserUpdateInput,
+  IUserUpdateOutput,
+} from "../interfaces/IUser";
 
 export class UserRepository {
   public async createUser(data: IUserCreateInput): Promise<IUserCreateOutput> {
@@ -29,9 +35,61 @@ export class UserRepository {
       role: user.role,
     };
   }
-  // public async updateUser(userId: number, data: IUserUpdateInput): Promise<IUserUpdateOutput>{
-  //   const userUpdated = await prisma.users.update({
+  public async updateUser(
+    id: number,
+    data: IUserUpdateInput,
+  ): Promise<IUserUpdateOutput> {
+    if (data.password) {
+      data.password = await generateHashedPassword(data.password);
+    }
 
-  //   })
-  // }
+    const user = await prisma.users.update({
+      where: {
+        id,
+      },
+      data: {
+        name: data.name!,
+        email: data.email!,
+        cellphone: data.cellphone!,
+        city: data.city!,
+        password_hash: data.password!,
+        neighborhood: data.neighborhood!,
+        number: data.number!,
+        state: data.state! as $Enums.users_state,
+        zip_code: data.zipcode!,
+        street: data.street!,
+        role: data.role as $Enums.users_role,
+      },
+    });
+
+    return {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      cellphone: user.cellphone,
+      neighborhood: user.neighborhood,
+      number: user.number,
+      city: user.city,
+      state: user.state,
+      zipcode: user.zip_code,
+      street: user.street,
+      role: user.role,
+    };
+  }
+  public async getUserById(id: number) {
+    const user = await prisma.users.findUnique({
+      where: {
+        id,
+      },
+    });
+    return user;
+  }
+  public async getUsersByRole(role: $Enums.users_role) {
+    const users = await prisma.users.findMany({
+      where: {
+        role,
+      },
+    });
+    return users;
+  }
 }
