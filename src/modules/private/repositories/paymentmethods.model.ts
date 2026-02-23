@@ -1,7 +1,7 @@
 import { prisma } from "../../../../prisma/config/prisma";
 import { IPaymentMethodsInput } from "../interfaces/IPaymentMethods";
 
-export class PaymentMethods {
+export class PaymentMethodsRepository {
   public async create(data: IPaymentMethodsInput) {
     const payment = await prisma.payment_methods.create({
       data: {
