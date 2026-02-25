@@ -71,5 +71,7 @@ export class CategoriesRepository {
         deleted_at: new Date(),
       },
     });
+
+    return category;
   }
 }

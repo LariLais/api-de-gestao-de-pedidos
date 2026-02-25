@@ -32,6 +32,9 @@ export class OrdersRepository {
       data: {
         status: data.status,
       },
+      include: {
+        order_items: true,
+      },
     });
     return order;
   }
@@ -42,6 +45,7 @@ export class OrdersRepository {
         order_items: true,
       },
     });
+    return order;
   }
   public async getAll() {
     const orders = await prisma.orders.findMany({
@@ -49,7 +53,6 @@ export class OrdersRepository {
     });
     return orders;
   }
-
   private async createOrderItems(orderId: number, data: IOrdersItemsInput) {
     const ordersItems = await prisma.order_items.create({
       data: {

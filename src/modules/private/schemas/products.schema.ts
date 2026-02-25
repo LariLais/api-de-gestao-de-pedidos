@@ -1,9 +1,12 @@
+import { Decimal } from "@prisma/client/runtime/library";
 import { z } from "zod";
-import { partial } from "zod/v4/core/util.cjs";
 
 export const productSchema = z.object({
   name: z.string(),
-  price: z.string(),
+  price: z
+    .string()
+    .regex(/^\d+(\.\d{1,2})?$/)
+    .transform((val) => new Decimal(val)),
   size: z
     .string()
     .nonempty("O campo 'size' tem tamanho máximo de 5 caracteres.")
@@ -19,7 +22,10 @@ export const productSchema = z.object({
 export const productUpdateSchema = z
   .object({
     name: z.string(),
-    price: z.string(),
+    price: z
+      .string()
+      .regex(/^\d+(\.\d{1,2})?$/)
+      .transform((val) => new Decimal(val)),
     size: z
       .string()
       .nonempty("O campo 'size' tem tamanho máximo de 5 caracteres.")

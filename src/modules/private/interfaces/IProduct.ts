@@ -13,11 +13,11 @@ export interface IProductInput {
 }
 
 export interface IProductUpdateInput {
-  name?: string;
-  price?: Decimal;
-  size?: string;
-  color_rgb?: string;
-  stock?: number;
+  name?: string | undefined;
+  price?: Decimal | undefined;
+  size?: string | undefined;
+  color_rgb?: string | undefined;
+  stock?: number | undefined;
   description?: string | undefined;
   visible?: boolean | undefined;
   categoryId?: number | undefined;
@@ -32,7 +32,7 @@ export interface IProductResponse {
   color_rgb: string;
   stock: number;
   description: string;
-  visible: string;
-  categoryId: number;
-  brandId: number;
+  visible: boolean;
+  categoryId?: number | undefined;
+  brandId?: number | undefined;
 }

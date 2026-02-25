@@ -58,15 +58,38 @@ export class CategoryService {
     return response;
   }
 
-  public async getCategoryById(id: number) {
+  public async getCategoryById(id: number): Promise<ICategoryResponse> {
+    const response = await this.categoryRepository.getCategoryById(id);
 
+    if (!response) {
+      throw new AppError("Categoria não encontrada.", StatusCodes.NOT_FOUND);
+    }
+
+    return response;
   }
 
-  public async getAllCategories() {
+  public async getAllCategories(): Promise<ICategoryResponse[]> {
+    const response = await this.categoryRepository.getAllCategories();
 
+    if (!response || response.length === 0) {
+      throw new AppError(
+        "Não há categorias cadastradas",
+        StatusCodes.NOT_FOUND,
+      );
+    }
+
+    return response;
   }
 
-  public async deleteCategory() {
+  public async deleteCategory(id: number) {
+    const response = await this.categoryRepository.deleteCategory(id);
 
+    if (!response) {
+      throw new AppError("Categoria não encontrada.", StatusCodes.NOT_FOUND);
+    }
+
+    return {
+      message: "Categoria deletada com sucesso",
+    };
   }
 }

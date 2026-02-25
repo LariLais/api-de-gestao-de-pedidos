@@ -6,5 +6,5 @@ export interface IBrandInput {
 export interface IBrandResponse {
   id: number;
   name: string;
-  visible: boolean | undefined;
+  visible: boolean | null;
 }

@@ -4,7 +4,7 @@ import { $Enums } from "../../../generated/prisma/browser";
 export interface IOrdersInput {
   userId: number;
   paymentMethodId: number;
-  status?: $Enums.orders_status;
+  status: $Enums.orders_status;
   totalAmount: Decimal;
   orderItems: {
     productId: number;
