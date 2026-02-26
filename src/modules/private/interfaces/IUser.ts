@@ -14,11 +14,18 @@ export interface IUserCreateInput {
   zipcode: string;
 }
 
-export interface IUserCreateOutput {
+export interface IUserResponse {
   id: number;
   name: string;
   email: string;
   role: $Enums.users_role;
+  cellphone: string;
+  street: string;
+  neighborhood: string;
+  number: string;
+  city: string;
+  state: $Enums.users_state;
+  zipcode: string;
 }
 
 export interface IUserUpdateInput {
@@ -33,25 +40,4 @@ export interface IUserUpdateInput {
   city?: string;
   state?: $Enums.users_state;
   zipcode?: string;
-}
-
-export interface IUserUpdateOutput {
-  id: number;
-  name: string;
-  email: string;
-  role: $Enums.users_role;
-  cellphone: string;
-  street: string;
-  neighborhood: string;
-  number: string;
-  city: string;
-  state: $Enums.users_state;
-  zipcode: string;
-}
-
-export interface IUserOutput {
-  id: number;
-  name: string;
-  email: string;
-  role: $Enums.users_role;
 }

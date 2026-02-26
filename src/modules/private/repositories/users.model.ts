@@ -1,15 +1,10 @@
 import { prisma } from "../../../../prisma/config/prisma";
 import { $Enums } from "../../../generated/prisma/client";
 import { generateHashedPassword } from "../../../utils/generateHashedPassword";
-import {
-  IUserCreateInput,
-  IUserCreateOutput,
-  IUserUpdateInput,
-  IUserUpdateOutput,
-} from "../interfaces/IUser";
+import { IUserCreateInput, IUserUpdateInput } from "../interfaces/IUser";
 
 export class UserRepository {
-  public async createUser(data: IUserCreateInput): Promise<IUserCreateOutput> {
+  public async createUser(data: IUserCreateInput) {
     const hashedPassword = await generateHashedPassword(data.password);
 
     const user = await prisma.users.create({
@@ -28,17 +23,9 @@ export class UserRepository {
       },
     });
 
-    return {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-    };
+    return user;
   }
-  public async updateUser(
-    id: number,
-    data: IUserUpdateInput,
-  ): Promise<IUserUpdateOutput> {
+  public async updateUser(id: number, data: IUserUpdateInput) {
     if (data.password) {
       data.password = await generateHashedPassword(data.password);
     }
@@ -62,19 +49,7 @@ export class UserRepository {
       },
     });
 
-    return {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      cellphone: user.cellphone,
-      neighborhood: user.neighborhood,
-      number: user.number,
-      city: user.city,
-      state: user.state,
-      zipcode: user.zip_code,
-      street: user.street,
-      role: user.role,
-    };
+    return user;
   }
   public async getUserById(id: number) {
     const user = await prisma.users.findUnique({

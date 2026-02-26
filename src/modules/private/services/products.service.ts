@@ -4,7 +4,7 @@ import { IProductInput, IProductResponse } from "../interfaces/IProduct";
 import { ProductRepository } from "../repositories/products.model";
 import { productSchema } from "../schemas/products.schema";
 
-export class ProductsService {
+export class ProductService {
   private repository = new ProductRepository();
 
   public async create(body: IProductInput): Promise<IProductResponse> {

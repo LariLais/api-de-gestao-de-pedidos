@@ -1,11 +1,6 @@
 import { StatusCodes } from "http-status-codes";
 import { AppError } from "../../../errors/appError";
-import {
-  IUserCreateInput,
-  IUserCreateOutput,
-  IUserOutput,
-  IUserUpdateInput,
-} from "../interfaces/IUser";
+import { IUserCreateInput, IUserResponse } from "../interfaces/IUser";
 import { UserRepository } from "../repositories/users.model";
 import { userCreateSchema, userUpdateSchema } from "../schemas/users.schema";
 import { $Enums } from "../../../generated/prisma/client";
@@ -13,7 +8,7 @@ import { $Enums } from "../../../generated/prisma/client";
 export class UserService {
   private userRepository = new UserRepository();
 
-  public async createUser(body: IUserCreateInput): Promise<IUserCreateOutput> {
+  public async createUser(body: IUserCreateInput): Promise<IUserResponse> {
     const data = userCreateSchema.safeParse(body);
 
     if (!data.success) {
@@ -33,13 +28,13 @@ export class UserService {
       );
     }
 
-    return response;
+    return await this.formatResponse(response);
   }
 
   public async updateUser(
     id: number,
     body: Partial<IUserCreateInput>,
-  ): Promise<IUserUpdateInput> {
+  ): Promise<IUserResponse> {
     const data = userUpdateSchema.safeParse(body);
 
     if (!data.success) {
@@ -56,10 +51,10 @@ export class UserService {
       throw new AppError("Usuáerio não encontrado", StatusCodes.NOT_FOUND);
     }
 
-    return response;
+    return await this.formatResponse(response);
   }
 
-  public async getUserById(id: number): Promise<IUserOutput> {
+  public async getUserById(id: number): Promise<IUserResponse> {
     const response = await this.userRepository.getUserById(id);
 
     if (!response) {
@@ -73,25 +68,33 @@ export class UserService {
       role: response.role,
     };
 
-    return responseReturn;
+    return await this.formatResponse(response);
   }
 
-  public async getUsersByRole(role: $Enums.users_role): Promise<IUserOutput[]> {
+  public async getUsersByRole(role: $Enums.users_role): Promise<IUserResponse> {
     const response = await this.userRepository.getUsersByRole(role);
 
     if (!response || response.length === 0) {
       throw new AppError("Nenhum usuário encontrado", StatusCodes.NOT_FOUND);
     }
 
-    const responseFormatted = response.map((user) => {
-      return {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-      };
-    });
+    return await this.formatResponse(response);
+  }
 
-    return responseFormatted;
+  private async formatResponse(data: any) {
+    const dataFormatted: IUserResponse = {
+      id: data.id,
+      name: data.name,
+      email: data.email,
+      role: data.role,
+      cellphone: data.cellphone,
+      street: data.street,
+      neighborhood: data.neighborhood,
+      number: data.number,
+      city: data.city,
+      state: data.state,
+      zipcode: data.zipcode,
+    };
+    return dataFormatted;
   }
 }
