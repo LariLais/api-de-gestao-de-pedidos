@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { ResponseHandler } from "../../../utils/responseHandler";
 import { CategoryService } from "../services/categories.service";
 
-export class CategoryControllr {
+export class CategoryController {
   private readonly service = new CategoryService();
 
   public async create(req: Request, res: Response) {
