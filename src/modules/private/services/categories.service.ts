@@ -7,9 +7,7 @@ import { categorySchema } from "../schemas/categories.schema";
 export class CategoryService {
   private categoryRepository = new CategoriesRepository();
 
-  public async createCategory(
-    body: ICategoryInput,
-  ): Promise<ICategoryResponse> {
+  public async create(body: ICategoryInput): Promise<ICategoryResponse> {
     const data = categorySchema.safeParse(body);
 
     if (!data.success) {
@@ -32,7 +30,7 @@ export class CategoryService {
     return response;
   }
 
-  public async updateCategory(
+  public async update(
     id: number,
     body: Partial<ICategoryInput>,
   ): Promise<ICategoryResponse> {
@@ -58,7 +56,7 @@ export class CategoryService {
     return response;
   }
 
-  public async getCategoryById(id: number): Promise<ICategoryResponse> {
+  public async getById(id: number): Promise<ICategoryResponse> {
     const response = await this.categoryRepository.getCategoryById(id);
 
     if (!response) {
@@ -68,7 +66,7 @@ export class CategoryService {
     return response;
   }
 
-  public async getAllCategories(): Promise<ICategoryResponse[]> {
+  public async getAll(): Promise<ICategoryResponse[]> {
     const response = await this.categoryRepository.getAllCategories();
 
     if (!response || response.length === 0) {
@@ -81,7 +79,7 @@ export class CategoryService {
     return response;
   }
 
-  public async deleteCategory(id: number) {
+  public async delete(id: number) {
     const response = await this.categoryRepository.deleteCategory(id);
 
     if (!response) {
