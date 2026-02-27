@@ -5,12 +5,17 @@ export const emailSchema = z.string().trim().pipe(z.email("Email inválido"));
 export const passwordSchema = z
   .string()
   .nonempty("O campo de senha é obrigatório.")
-  .min(6, "A senha deve conter pelo menos 6 caracteres.");
+  .min(6, "A senha deve conter pelo menos 6 caracteres.")
+  .trim();
 export const cellphoneSchema = z
   .string()
   .regex(/^\d{10,11}$/, "Telefone inválido")
-  .max(15);
-export const zipCodeSchema = z.string().regex(/^\d{5}-?\d{3}$/, "CEP inválido");
+  .max(15)
+  .trim();
+export const zipCodeSchema = z
+  .string()
+  .regex(/^\d{5}-?\d{3}$/, "CEP inválido")
+  .trim();
 export const decimalSchema = z.coerce
   .number()
   .positive()
@@ -24,6 +29,7 @@ export const colorRgbSchema = z
   .regex(
     /^(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d),(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d),(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)$/,
   )
+  .trim()
   .transform((val) => {
     const [r, g, b] = val.split(",").map(Number);
     return { r, g, b };

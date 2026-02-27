@@ -3,12 +3,13 @@ import { $Enums } from "../../../../generated/prisma/client";
 import {
   cellphoneSchema,
   emailSchema,
+  nameSchema,
   passwordSchema,
   zipCodeSchema,
 } from "../../../../schemas/schemas";
 
 export const userCreateSchema = z.object({
-  name: z.string(),
+  name: nameSchema,
   email: emailSchema,
   password: passwordSchema,
   role: z.enum(["CUSTOMER", "ADMIN", "STORE"]),
@@ -23,7 +24,7 @@ export const userCreateSchema = z.object({
 
 export const userUpdateSchema = z
   .object({
-    name: z.string().optional(),
+    name: nameSchema.optional(),
     email: emailSchema.optional(),
     password: passwordSchema.optional(),
     role: z.enum(["CUSTOMER", "ADMIN", "STORE"]).optional(),
