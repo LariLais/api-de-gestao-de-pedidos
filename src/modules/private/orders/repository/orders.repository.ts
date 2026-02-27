@@ -1,6 +1,7 @@
 import { prisma } from "../../../../../prisma/config/prisma";
 import { IOrdersInput, IOrdersStatus, IOrdersItemsInput } from "../interface/IOrders";
 
+
 export class OrdersRepository {
   public async create(data: IOrdersInput) {
     const orders = await prisma.orders.create({

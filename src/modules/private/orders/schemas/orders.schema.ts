@@ -1,22 +1,17 @@
 import { Decimal } from "@prisma/client/runtime/library";
 import { z } from "zod";
+import { decimalSchema } from "../../../../schemas/schemas";
 
 export const orderCreateSchema = z.object({
   userId: z.number(),
   paymentMethodId: z.number(),
   status: z.enum(["PENDING", "PAID", "SHIPPED", "CANCELED"]),
-  totalAmount: z
-    .string()
-    .regex(/^\d+(\.\d{1,2})?$/)
-    .transform((val) => new Decimal(val)),
+  totalAmount: decimalSchema,
   orderItems: z
     .object({
-      productId: z.number(),
-      quantity: z.number(),
-      unitPrice: z
-        .string()
-        .regex(/^\d+(\.\d{1,2})?$/)
-        .transform((val) => new Decimal(val)),
+      productId: z.number().positive().int(),
+      quantity: z.number().int().min(1),
+      unitPrice: decimalSchema,
     })
     .array(),
 });

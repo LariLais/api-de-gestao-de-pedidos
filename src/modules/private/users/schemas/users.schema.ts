@@ -1,52 +1,38 @@
 import { z } from "zod";
 import { $Enums } from "../../../../generated/prisma/client";
+import {
+  cellphoneSchema,
+  emailSchema,
+  passwordSchema,
+  zipCodeSchema,
+} from "../../../../schemas/schemas";
 
 export const userCreateSchema = z.object({
   name: z.string(),
-  email: z
-    .string()
-    .nonempty("O campo de email é obrigatório.")
-    .regex(
-      /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-      "O campo de email deve ser um endereço de email válido.",
-    ),
-  password: z
-    .string()
-    .nonempty("O campo de senha é obrigatório.")
-    .min(6, "A senha deve conter pelo menos 6 caracteres."),
+  email: emailSchema,
+  password: passwordSchema,
   role: z.enum(["CUSTOMER", "ADMIN", "STORE"]),
-  cellphone: z.string().max(15),
+  cellphone: cellphoneSchema,
   street: z.string(),
   neighborhood: z.string(),
   number: z.string(),
   city: z.string(),
   state: z.enum($Enums.users_state),
-  zipcode: z.string(),
+  zipcode: zipCodeSchema,
 });
 
 export const userUpdateSchema = z
   .object({
     name: z.string().optional(),
-    email: z
-      .string()
-      .nonempty("O campo de email é obrigatório.")
-      .regex(
-        /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-        "O campo de email deve ser um endereço de email válido.",
-      )
-      .optional(),
-    password: z
-      .string()
-      .nonempty("O campo de senha é obrigatório.")
-      .min(6, "A senha deve conter pelo menos 6 caracteres.")
-      .optional(),
+    email: emailSchema.optional(),
+    password: passwordSchema.optional(),
     role: z.enum(["CUSTOMER", "ADMIN", "STORE"]).optional(),
-    cellphone: z.string().max(15).optional(),
+    cellphone: cellphoneSchema.optional(),
     street: z.string().optional(),
     neighborhood: z.string().optional(),
     number: z.string().optional(),
     city: z.string().optional(),
     state: z.enum($Enums.users_state).optional(),
-    zipcode: z.string().optional(),
+    zipcode: zipCodeSchema.optional(),
   })
   .partial();
