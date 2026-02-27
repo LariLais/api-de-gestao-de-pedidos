@@ -1,7 +1,7 @@
 import { StatusCodes } from "http-status-codes";
 import { AppError } from "../../../errors/appError";
 import { IProductInput, IProductResponse } from "../interfaces/IProduct";
-import { ProductRepository } from "../repositories/products.model";
+import { ProductRepository } from "../repositories/products.repository";
 import { productSchema } from "../schemas/products.schema";
 
 export class ProductService {

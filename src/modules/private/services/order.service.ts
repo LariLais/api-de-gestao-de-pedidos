@@ -5,7 +5,7 @@ import {
   IOrdersResponse,
   IOrdersStatus,
 } from "../interfaces/IOrders";
-import { OrdersRepository } from "../repositories/orders.model";
+import { OrdersRepository } from "../repositories/orders.repository";
 import { orderCreateSchema } from "../schemas/orders.schema";
 
 export class OrderService {

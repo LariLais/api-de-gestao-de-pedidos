@@ -1,7 +1,7 @@
 import { StatusCodes } from "http-status-codes";
 import { AppError } from "../../../errors/appError";
 import { ICategoryInput, ICategoryResponse } from "../interfaces/ICategory";
-import { CategoriesRepository } from "../repositories/categories.model";
+import { CategoriesRepository } from "../repositories/categories.repository";
 import { categorySchema } from "../schemas/categories.schema";
 
 export class CategoryService {

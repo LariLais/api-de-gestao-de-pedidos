@@ -1,7 +1,7 @@
 import { StatusCodes } from "http-status-codes";
 import { AppError } from "../../../errors/appError";
 import { IBrandInput, IBrandResponse } from "../interfaces/IBrands";
-import { BrandsRepository } from "../repositories/brands.model";
+import { BrandsRepository } from "../repositories/brands.repository";
 import { brandSchema } from "../schemas/brands.schema";
 
 export class BrandService {

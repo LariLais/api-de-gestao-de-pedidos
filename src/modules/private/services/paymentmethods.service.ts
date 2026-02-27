@@ -4,7 +4,7 @@ import {
   IPaymentMethodsInput,
   IPaymentMethodsResponse,
 } from "../interfaces/IPaymentMethods";
-import { PaymentMethodsRepository } from "../repositories/paymentmethods.model";
+import { PaymentMethodsRepository } from "../repositories/paymentmethods.repository";
 import { paymentMethodSchema } from "../schemas/paymentmethods.schema";
 
 export class PaymentMethodsService {

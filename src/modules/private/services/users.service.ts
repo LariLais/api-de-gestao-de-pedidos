@@ -1,7 +1,7 @@
 import { StatusCodes } from "http-status-codes";
 import { AppError } from "../../../errors/appError";
 import { IUserCreateInput, IUserResponse } from "../interfaces/IUser";
-import { UserRepository } from "../repositories/users.model";
+import { UserRepository } from "../repositories/users.repository";
 import { userCreateSchema, userUpdateSchema } from "../schemas/users.schema";
 import { $Enums } from "../../../generated/prisma/client";
 
