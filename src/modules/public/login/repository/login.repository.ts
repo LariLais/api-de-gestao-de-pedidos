@@ -6,8 +6,6 @@ import bcrypt from "bcrypt";
 
 export class LoginRepository {
   public async getUser(email: string): Promise<ILoginUserResponse> {
-
-    console.log(email)
     const user = await prisma.users.findUnique({
       where: {
         email: email,

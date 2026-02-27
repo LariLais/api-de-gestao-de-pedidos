@@ -1,16 +1,14 @@
 import { StatusCodes } from "http-status-codes";
 import { AppError } from "../../../../errors/appError";
 import { ILogin } from "../interfaces/ILogin";
-import { LoginRepository } from "../repository/login.model";
+import { LoginRepository } from "../repository/login.repository";
 import { loginSchema } from "../schemas/loginSchema";
 import jwt, { SignOptions } from "jsonwebtoken";
 import { Response } from "express";
 import ms from "ms";
 
 const loginRepository = new LoginRepository();
-const TOKEN_SECRET =
-  process.env.TOKEN_SECRET ||
-  "OCOeUnIijBBl08ViS3eyPPyFw5WdgqgsaNQCtpIrGKqtTN6cZzFNaDJfLXsI7n5ERB8w0jZMQrdnfggjU5qomo";
+const TOKEN_SECRET = process.env.TOKEN_SECRET;
 
 const signOptions: SignOptions = {
   expiresIn: (process.env.TOKEN_EXPIRES_IN ?? "1h") as ms.StringValue,
@@ -58,7 +56,7 @@ export class LoginService {
 
     if (!TOKEN_SECRET) {
       throw new AppError(
-        "JWT_SECRET não definido",
+        "TOKEN_SECRET não definido",
         StatusCodes.INTERNAL_SERVER_ERROR,
       );
     }
