@@ -11,8 +11,9 @@ const loginRepository = new LoginRepository();
 const TOKEN_SECRET = process.env.TOKEN_SECRET;
 
 const signOptions: SignOptions = {
-  expiresIn: (process.env.TOKEN_EXPIRES_IN ?? "1h") as ms.StringValue,
+  expiresIn: (process.env.TOKEN_EXPIRES_IN ?? "5m") as ms.StringValue,
 };
+const REFRESH_TOKEN = String(process.env.REFRESH_TOKEN);
 
 export class LoginService {
   public async login(login: ILogin, res: Response) {
@@ -68,11 +69,36 @@ export class LoginService {
       role: user.role,
     };
 
-    const token = jwt.sign(payload, TOKEN_SECRET, {
-      expiresIn: signOptions.expiresIn || "1h",
+    const accessToken = jwt.sign(payload, TOKEN_SECRET, {
+      expiresIn: signOptions.expiresIn || "5m",
     });
 
-    res.cookie("token", token, {
+    const refreshToken = jwt.sign(payload, TOKEN_SECRET, {
+      expiresIn: REFRESH_TOKEN as ms.StringValue,
+    });
+
+    const expiresDate = new Date(Date.now() + ms(7));
+    await loginRepository.saveRefreshToken(refreshToken, user.id, expiresDate);
+
+    res.cookie("token", accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge:
+        typeof signOptions.expiresIn === "number"
+          ? signOptions.expiresIn * 1000
+          : 3600000,
+      domain:
+        process.env.NODE_ENV === "production" ? "yourdomain.com" : "localhost",
+      expires: new Date(
+        Date.now() +
+          (typeof signOptions.expiresIn === "number"
+            ? signOptions.expiresIn * 1000
+            : 3600000),
+      ),
+    });
+
+    res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",

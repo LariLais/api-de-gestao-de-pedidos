@@ -1,7 +1,6 @@
 import { Router } from "express";
 import { loginRouter } from "../modules/public/login/routes/login.routes";
 import { autenticate } from "../modules/public/login/middleware/autentication.middleware";
-import { roleMiddleware } from "../middlewares/roleMiddleware";
 import { userRouter } from "../modules/private/users/routes/users.routes";
 import { productRouter } from "../modules/private/products/routes/products.routes";
 import { paymentMethodRouter } from "../modules/private/paymentMethods/routes/paymentmethods.routes";

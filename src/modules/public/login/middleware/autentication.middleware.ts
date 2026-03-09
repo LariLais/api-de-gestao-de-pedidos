@@ -3,9 +3,7 @@ import { ResponseHandler } from "../../../../utils/responseHandler";
 import jwt from "jsonwebtoken";
 import { StatusCodes } from "http-status-codes";
 
-const TOKEN_SECRET =
-  process.env.TOKEN_SECRET ||
-  "OCOeUnIijBBl08ViS3eyPPyFw5WdgqgsaNQCtpIrGKqtTN6cZzFNaDJfLXsI7n5ERB8w0jZMQrdnfggjU5qomo";
+const TOKEN_SECRET = process.env.TOKEN_SECRET;
 
 const SECURE_HTTP = process.env.SECURE_HTTP;
 
@@ -21,6 +19,10 @@ export async function autenticate(
       res,
       "Usuário não autenticado. Token não fornecido.",
     );
+  }
+
+  if (!TOKEN_SECRET) {
+    return ResponseHandler.unauthorized(res, "TOKEN SECRET INDEFINIDO.");
   }
 
   try {
